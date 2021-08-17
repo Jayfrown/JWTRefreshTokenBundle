@@ -17,8 +17,8 @@ use Gesdinet\JWTRefreshTokenBundle\Model\RefreshTokenManagerInterface;
 use Gesdinet\JWTRefreshTokenBundle\Request\Extractor\ExtractorInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\AuthenticationSuccessEvent;
 use Symfony\Component\HttpFoundation\Cookie;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class AttachRefreshTokenOnSuccessListener
 {
@@ -60,7 +60,7 @@ class AttachRefreshTokenOnSuccessListener
     /**
      * @var array
      */
-    protected $cookieSettings;
+    protected array $cookieSettings;
 
     /**
      * @param int    $ttl
@@ -85,6 +85,7 @@ class AttachRefreshTokenOnSuccessListener
         $this->refreshTokenGenerator = $refreshTokenGenerator;
         $this->extractor = $extractor;
         $this->cookieSettings = array_merge([
+            'enabled' => false,
             'sameSite' => 'lax',
             'path' => '/',
             'domain' => null,
@@ -124,7 +125,7 @@ class AttachRefreshTokenOnSuccessListener
             $refreshTokenString = $refreshToken->getRefreshToken();
         }
 
-        if (isset($this->cookieSettings['enabled']) && $this->cookieSettings['enabled']) {
+        if ($this->cookieSettings['enabled']) {
             $event->getResponse()->headers->setCookie(
                 new Cookie(
                     $this->tokenParameterName,

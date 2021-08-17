@@ -38,6 +38,14 @@ final class ConfigurationTest extends TestCase
                 'single_use' => true,
                 'token_parameter_name' => 'the_token',
                 'doctrine_mappings' => false,
+                'cookie' => [
+                    'enabled' => true,
+                    'sameSite' => 'strict',
+                    'path' => '/api/',
+                    'domain' => 'example.com',
+                    'secure' => false,
+                    'httpOnly' => false,
+                ],
             ],
         ]);
     }
